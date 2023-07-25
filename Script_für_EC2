@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Überprüfen, ob die IP-Adresse der EC2-Instanz als Argument übergeben wurde
+if [ $# -ne 1 ]; then
+  echo "Fehler: Bitte geben Sie die IP-Adresse der EC2-Instanz als Argument an."
+  echo "Beispiel: $0 123.456.789.123"
+  exit 1
+fi
+
+# IP-Adresse der EC2-Instanz als Argument speichern
+ip_adresse="$1"
+
+# Dateinamen für den key.pem
+pem_datei="key.pem"
+
+# Ziel Dateiname für den key.pem mit IP-Adresse
+ziel_datei="key_${ip_adresse}.pem"
+
+# Ändere die Rechte der key.pem Datei
+chmod 400 "$pem_datei"
+
+# Verbinde dich mit der EC2-Instanz unter Verwendung von ssh
+ssh -i "$pem_datei" ec2-user@"$ip_adresse"
+
